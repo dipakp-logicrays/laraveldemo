@@ -29,29 +29,111 @@ You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+# Laravel Demo Project
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Welcome to the **LaravelDemo** repository! This project is a beginner-friendly Laravel application to understand the core fundamentals of Laravel framework step-by-step.
 
-### Premium Partners
+GitHub Repo: [https://github.com/dipakp-logicrays/laraveldemo](https://github.com/dipakp-logicrays/laraveldemo)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 📁 Project Information
+- **Project Name**: LaravelDemo
+- **Framework**: Laravel 10+
+- **Purpose**: Practice Laravel basics — MVC, migrations, seeders, Blade templates, database, and artisan commands.
+- **Local Path**: `/var/www/html/laraveldemo/`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
+
+## 🧰 Requirements
+- PHP 8.x
+- Composer
+- MySQL or MariaDB
+- Laravel CLI (`laravel installer`)
+- Git
+
+---
+
+## 🚀 Installation Instructions
+
+```bash
+# Step 1: Clone the project
+cd /var/www/html/
+git clone https://github.com/dipakp-logicrays/laraveldemo.git
+
+# Step 2: Navigate into project directory
+cd laraveldemo
+
+# Step 3: Install dependencies
+composer install
+
+# Step 4: Copy environment file
+cp .env.example .env
+
+# Step 5: Generate app key
+php artisan key:generate
+
+# Step 6: Setup database (create manually or via MySQL)
+Update your .env file with correct DB info:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laraveldemo
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
+
+## 🗃️ MySQL Database Setup
+
+### Create Database:
+
+```bash
+CREATE DATABASE laraveldemo;
+```
+
+### Import SQL (optional backup):
+```bash
+mysql -u root -p laraveldemo < backup.sql
+```
+
+
+### Export SQL::
+```bash
+mysqldump -u root -p laraveldemo > backup.sql
+```
+
+## ⚙️ Laravel Artisan Commands Guide
+
+### ✔ Common Artisan Commands
+
+```bash
+php artisan list                        # List all commands
+php artisan route:list                 # View registered routes
+php artisan serve                      # Start local server
+php artisan config:cache               # Cache config files
+php artisan migrate                    # Run all migrations
+php artisan db:seed                    # Run seeders
+php artisan migrate:refresh --seed    # Reset DB and seed again
+```
+
+### 🛠 Generate Files
+```bash
+php artisan make:controller ProductController
+php artisan make:model Product -mf       # Model with migration and factory
+php artisan make:migration create_products_table
+php artisan make:seeder ProductSeeder
+php artisan make:factory ProductFactory --model=Product
+```
+
+## 🔄 Laravel Project Flow Cycle (Basic)
+
+Request -> Route -> Controller -> Model -> DB -> View (Blade)
+
+## 🙏 Credits
+
+Created by Dipak for learning Laravel from scratch using real project structure and flow.
+
 
 ## Code of Conduct
 
