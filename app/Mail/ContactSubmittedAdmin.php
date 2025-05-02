@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Contact;
 
-class ContactSubmitted extends Mailable
+class ContactSubmittedAdmin extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -32,7 +32,7 @@ class ContactSubmitted extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Thanks for contacting us!',
+            subject: 'New Contact Form Submitted',
         );
     }
 
@@ -42,7 +42,7 @@ class ContactSubmitted extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.contact_submitted',
+            view: 'emails.contact-submitted-admin',
         );
     }
 
