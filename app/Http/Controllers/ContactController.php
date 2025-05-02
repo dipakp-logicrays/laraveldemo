@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use App\Mail\ContactSubmitted;
+use App\Mail\ContactSubmittedAdmin;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -36,8 +39,15 @@ class ContactController extends Controller
             'description' => 'required|string',
         ]);
 
-        Contact::create($validated);
-        return redirect()->route('contacts.index')->with('success', 'Contact created successfully.');
+        $contact = Contact::create($validated);
+
+        // Send email to customer
+        Mail::to($contact->email)->send(new ContactSubmitted($contact));
+
+        // Send email to admin
+        Mail::to('contact@laraveldemo.com')->send(new ContactSubmittedAdmin($contact));
+
+        return redirect()->route('contacts.index')->with('success', 'Contact created and email sent successfully.');
     }
 
     /**
