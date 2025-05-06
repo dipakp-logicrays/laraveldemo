@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Faq;
 
 class FaqSeeder extends Seeder
 {
@@ -13,9 +14,11 @@ class FaqSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('faqs')->insert([
-            ['question' => 'What is Laravel?', 'answer' => 'Laravel is a PHP framework.'],
-            ['question' => 'Is Laravel open source?', 'answer' => 'Yes, it is open source.'],
-        ]);
+        // DB::table('faqs')->insert([
+        //     ['question' => 'What is Laravel?', 'answer' => 'Laravel is a PHP framework.'],
+        //     ['question' => 'Is Laravel open source?', 'answer' => 'Yes, it is open source.'],
+        // ]);
+
+        Faq::factory()->count(8)->create();
     }
 }
