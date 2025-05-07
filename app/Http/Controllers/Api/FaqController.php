@@ -13,12 +13,31 @@ class FaqController extends Controller
     {
         $query = FAQ::query();
 
+        // Optional search
         if ($request->has('search') && $request->search != '') {
             $query->where('question', 'like', '%' . $request->search . '%')
                 ->orWhere('answer', 'like', '%' . $request->search . '%');
         }
 
-        $faqs = $query->orderBy('created_at', 'desc')->paginate(10); // pagination
+        // Valid sortable columns
+        $validSortBy = ['question', 'answer', 'created_at'];
+        $sortBy = $request->input('sort_by', 'created_at');
+        if (!in_array($sortBy, $validSortBy)) {
+            $sortBy = 'created_at';
+        }
+
+        // Sort direction
+        $sortDirection = strtolower($request->input('sort', 'desc'));
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        // Pagination
+        if ($request->has('page')) {
+            $faqs = $query->orderBy($sortBy, $sortDirection)->paginate(10);
+        } else {
+            $faqs = $query->orderBy($sortBy, $sortDirection)->get();
+        }
 
         return response()->json([
             'success' => true,
