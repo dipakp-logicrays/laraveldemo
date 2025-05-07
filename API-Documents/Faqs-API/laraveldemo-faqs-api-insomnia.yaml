@@ -1,0 +1,276 @@
+type: collection.insomnia.rest/5.0
+name: Laraveldemo Faq APIs
+meta:
+  id: wrk_ab1281e661cc4402ae18b4ab23271ee6
+  created: 1746602401556
+  modified: 1746602401556
+collection:
+  - url: http://laraveldemo.local/api/faqs
+    name: List Faqs
+    meta:
+      id: req_5177e335ff374363b5c649142999b1fc
+      created: 1746602419021
+      modified: 1746620635185
+      isPrivate: false
+      sortKey: -1746602419022
+    method: GET
+    parameters:
+      - id: pair_c0a2143f11244ef2a78c6ee957392a19
+        name: page
+        value: "1"
+        disabled: true
+      - id: pair_f7d6db2198914626b2d3b396e035ee2d
+        name: search
+        value: Magni vel omnis sed tenetur
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_889c630b20aa47a9aed3b322900cc848
+      - id: pair_4b9fd337c0084bb9beb340fe65598011
+        name: Accept
+        value: application/json
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://laraveldemo.local/api/faqs
+    name: List Faqs - Pagination
+    meta:
+      id: req_b49145ca813148c1bc18e9f1f71bba08
+      created: 1746620615329
+      modified: 1746620641341
+      isPrivate: false
+      sortKey: -1743618492075
+    method: GET
+    parameters:
+      - id: pair_c0a2143f11244ef2a78c6ee957392a19
+        name: page
+        value: "1"
+        disabled: false
+      - id: pair_f7d6db2198914626b2d3b396e035ee2d
+        name: search
+        value: Magni vel omnis sed tenetur
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_889c630b20aa47a9aed3b322900cc848
+      - id: pair_4b9fd337c0084bb9beb340fe65598011
+        name: Accept
+        value: application/json
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://laraveldemo.local/api/faqs
+    name: List Faqs - Pagination-With-Search
+    meta:
+      id: req_c02c9199312d4d00936025c923f47596
+      created: 1746620629181
+      modified: 1746620629181
+      isPrivate: false
+      sortKey: -1742126528601.5
+    method: GET
+    parameters:
+      - id: pair_c0a2143f11244ef2a78c6ee957392a19
+        name: page
+        value: "1"
+        disabled: false
+      - id: pair_f7d6db2198914626b2d3b396e035ee2d
+        name: search
+        value: Magni vel omnis sed tenetur
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_889c630b20aa47a9aed3b322900cc848
+      - id: pair_4b9fd337c0084bb9beb340fe65598011
+        name: Accept
+        value: application/json
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://laraveldemo.local/api/faqs
+    name: "Create Faq "
+    meta:
+      id: req_1047ca8426fc4528baa8bc56298545f2
+      created: 1746620689126
+      modified: 1746620766686
+      isPrivate: false
+      sortKey: -1741380546864.75
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+          "question": "What is Laravel Rest API?",
+          "answer": "A RESTful API (Representational State Transfer) in Laravel allows communication between your Laravel backend and any client (web, mobile, etc.) using standard HTTP methods: GET, POST, PUT, DELETE"
+        }
+    parameters:
+      - id: pair_c0a2143f11244ef2a78c6ee957392a19
+        name: page
+        value: "1"
+        disabled: false
+      - id: pair_f7d6db2198914626b2d3b396e035ee2d
+        name: search
+        value: Magni vel omnis sed tenetur
+        disabled: false
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_889c630b20aa47a9aed3b322900cc848
+      - id: pair_4b9fd337c0084bb9beb340fe65598011
+        name: Accept
+        value: application/json
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://laraveldemo.local/api/faqs/1
+    name: Get Specific Faq
+    meta:
+      id: req_6589736250044e7281a8d4452893c837
+      created: 1746620973699
+      modified: 1746622545948
+      isPrivate: false
+      sortKey: -1745110455548.5
+    method: GET
+    parameters:
+      - id: pair_c0a2143f11244ef2a78c6ee957392a19
+        name: page
+        value: "1"
+        disabled: true
+      - id: pair_f7d6db2198914626b2d3b396e035ee2d
+        name: search
+        value: Magni vel omnis sed tenetur
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_889c630b20aa47a9aed3b322900cc848
+      - id: pair_4b9fd337c0084bb9beb340fe65598011
+        name: Accept
+        value: application/json
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://laraveldemo.local/api/faqs/1
+    name: "Update Faq "
+    meta:
+      id: req_8a1114e8d84e4dc1b868b2ff0948160a
+      created: 1746622518551
+      modified: 1746622607259
+      isPrivate: false
+      sortKey: -1741007555996.375
+    method: PUT
+    body:
+      mimeType: application/json
+      text: >-
+        {
+          "question": "What is Laravel Rest API?",
+          "answer": "A RESTful API (Representational State Transfer) in Laravel allows communication between your Laravel backend and any client using standard HTTP methods: GET, POST, PUT, DELETE"
+        }
+    parameters:
+      - id: pair_c0a2143f11244ef2a78c6ee957392a19
+        name: page
+        value: "1"
+        disabled: false
+      - id: pair_f7d6db2198914626b2d3b396e035ee2d
+        name: search
+        value: Magni vel omnis sed tenetur
+        disabled: false
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_889c630b20aa47a9aed3b322900cc848
+      - id: pair_4b9fd337c0084bb9beb340fe65598011
+        name: Accept
+        value: application/json
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://laraveldemo.local/api/faqs/31
+    name: "Delete Faq "
+    meta:
+      id: req_5ee6031fb01b4f49a058e2eb526e4e3b
+      created: 1746622644491
+      modified: 1746622689270
+      isPrivate: false
+      sortKey: -1740821060562.1875
+    method: DELETE
+    parameters:
+      - id: pair_c0a2143f11244ef2a78c6ee957392a19
+        name: page
+        value: "1"
+        disabled: true
+      - id: pair_f7d6db2198914626b2d3b396e035ee2d
+        name: search
+        value: Magni vel omnis sed tenetur
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_889c630b20aa47a9aed3b322900cc848
+      - id: pair_4b9fd337c0084bb9beb340fe65598011
+        name: Accept
+        value: application/json
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_1f554b2311d80c6ba7737efbc70081ea25cbbd46
+    created: 1746602401561
+    modified: 1746602401561
+environments:
+  name: Base Environment
+  meta:
+    id: env_1f554b2311d80c6ba7737efbc70081ea25cbbd46
+    created: 1746602401559
+    modified: 1746602401559
+    isPrivate: false
