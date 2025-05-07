@@ -11,18 +11,19 @@ class FaqController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Faq::query();
+        $query = FAQ::query();
 
         if ($request->has('search') && $request->search != '') {
-            $search = $request->search;
-            $query->where('question', 'like', "%$search%")
-                  ->orWhere('answer', 'like', "%$search%");
+            $query->where('question', 'like', '%' . $request->search . '%')
+                ->orWhere('answer', 'like', '%' . $request->search . '%');
         }
+
+        $faqs = $query->orderBy('created_at', 'desc')->paginate(10); // pagination
 
         return response()->json([
             'success' => true,
-            'message' => 'FAQs retrieved successfully.',
-            'data' => $query->get(),
+            'message' => 'FAQ list fetched successfully.',
+            'data' => $faqs
         ]);
     }
 
