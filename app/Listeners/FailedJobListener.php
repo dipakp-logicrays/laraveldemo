@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class FailedJobListener
 {
@@ -25,8 +26,18 @@ class FailedJobListener
         $jobName = $event->job->resolveName();
         $exception = $event->exception->getMessage();
 
-        // Send email
-        Mail::raw("A job has failed: {$jobName}\n\nError: {$exception}", function ($message) {
+        $jobName = $event->job->resolveName();
+        $exceptionMessage = $event->exception->getMessage();
+        $payload = $event->job->payload();
+
+        // Log the failure
+        Log::channel('jobfailures')->error("Job failed: {$jobName}", [
+            'exception' => $exceptionMessage,
+            'payload' => $payload,
+        ]);
+
+        // Send email notification
+        Mail::raw("A job has failed: {$jobName}\n\nError: {$exceptionMessage}", function ($message) {
             $message->to('admin@example.com')
                     ->subject('Laravel Job Failed');
         });
