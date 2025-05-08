@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Contact;
+use Illuminate\Mail\Mailables\Attachment as MailAttachment;
+use Illuminate\Support\Facades\Storage;
 
 class ContactSubmittedAdmin extends Mailable
 {
@@ -53,6 +55,14 @@ class ContactSubmittedAdmin extends Mailable
      */
     public function attachments(): array
     {
+        if ($this->contact->attachment && Storage::disk('public')->exists($this->contact->attachment)) {
+            return [
+                MailAttachment::fromPath(storage_path('app/public/' . $this->contact->attachment))
+                    ->as(basename($this->contact->attachment))
+                    ->withMime(Storage::disk('public')->mimeType($this->contact->attachment)),
+            ];
+        }
+
         return [];
     }
 }
