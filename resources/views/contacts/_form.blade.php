@@ -38,6 +38,9 @@
 <div class="mb-4">
     <label class="block">Attachment (PNG, JPG, JPEG - Max 2MB)</label>
     <input type="file" name="attachment" class="w-full border rounded p-2">
+    @error('attachment')
+        <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+    @enderror
     @if (!empty($contact->attachment) && Storage::disk('public')->exists($contact->attachment))
         <div class="mb-4">
             <label class="block font-semibold">Current Attachment:</label>
