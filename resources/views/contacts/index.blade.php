@@ -10,6 +10,19 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <a href="{{ route('contacts.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mt-4 ml-4">Add Contact</a>
 
+                <form method="GET" action="{{ route('contacts.index') }}" class="mb-4 ml-4 mt-4">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request()->search }}"
+                        placeholder="Search Contact by Name or Email..."
+                        class="border p-2 rounded w-1/2"
+                    >
+                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded ml-3">
+                        Search
+                    </button>
+                </form>
+
                 <table class="w-full mt-4 border">
                     <thead>
                         <tr>
@@ -46,7 +59,10 @@
                         @endforeach
                     </tbody>
                 </table>
-
+                {{-- Pagination --}}
+                <div class="mt-4">
+                    {{ $contacts->appends(request()->query())->links() }}
+                </div>
             </div>
         </div>
     </div>
