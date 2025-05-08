@@ -89,13 +89,22 @@ class ContactController extends Controller
             ]
         );
 
-        if ($request->hasFile('attachment')) {
-            if ($contact->attachment) {
+        // Handle delete checkbox
+        if ($request->has('delete_attachment') && $contact->attachment) {
+            if (Storage::disk('public')->exists($contact->attachment)) {
                 Storage::disk('public')->delete($contact->attachment);
             }
-            $file = $request->file('attachment');
-            $path = $file->store('contact', 'public');
-            $validated['attachment'] = $path;
+            $contact->attachment = null;
+        }
+
+        // Handle new file upload
+        if ($request->hasFile('attachment')) {
+            if ($contact->attachment && Storage::disk('public')->exists($contact->attachment)) {
+                Storage::disk('public')->delete($contact->attachment);
+            }
+
+            $filePath = $request->file('attachment')->store('contact', 'public');
+            $validated['attachment'] = $filePath;
         }
 
         $contact->update($validated);

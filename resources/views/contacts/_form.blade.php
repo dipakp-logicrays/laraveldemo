@@ -38,9 +38,17 @@
 <div class="mb-4">
     <label class="block">Attachment (PNG, JPG, JPEG - Max 2MB)</label>
     <input type="file" name="attachment" class="w-full border rounded p-2">
-    @if(isset($contact) && $contact->attachment)
-        <img src="{{ asset('storage/' . $contact->attachment) }}" class="w-32 mt-2">
+    @if (!empty($contact->attachment) && Storage::disk('public')->exists($contact->attachment))
+        <div class="mb-4">
+            <label class="block font-semibold">Current Attachment:</label>
+            <img src="{{ asset('storage/' . $contact->attachment) }}" alt="Attachment" class="h-24 mb-2">
+            <label>
+                <input type="checkbox" name="delete_attachment" value="1">
+                Delete Attachment
+            </label>
+        </div>
     @endif
+
 </div>
 
 
