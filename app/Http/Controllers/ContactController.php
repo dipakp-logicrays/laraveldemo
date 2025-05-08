@@ -8,6 +8,7 @@ use App\Mail\ContactSubmitted;
 use App\Mail\ContactSubmittedAdmin;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Events\ContactCreated;
 
 class ContactController extends Controller
 {
@@ -57,6 +58,8 @@ class ContactController extends Controller
 
         // Send email to admin
         Mail::to('contact@laraveldemo.com')->send(new ContactSubmittedAdmin($contact));
+
+        event(new ContactCreated($contact)); // fire event
 
         return redirect()->route('contacts.index')->with('success', 'Contact created and email sent successfully.');
     }
