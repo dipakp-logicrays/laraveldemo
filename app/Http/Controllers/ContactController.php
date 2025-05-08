@@ -42,13 +42,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'email' => 'required|email',
-            'description' => 'required|string',
-            'attachment' => 'nullable|mimes:jpg,jpeg,png|max:2048'
-        ]);
+        $validated = $this->validateContact($request);
 
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
@@ -88,15 +82,7 @@ class ContactController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
-        $validated = $request->validate(
-            [
-                'name' => 'required|string|max:255',
-                'phone' => 'required|string|max:20',
-                'email' => 'required|email',
-                'description' => 'required|string',
-                'attachment' => 'nullable|mimes:jpg,jpeg,png|max:2048'
-            ]
-        );
+        $validated = $this->validateContact($request);
 
         // Handle delete checkbox
         if ($request->has('delete_attachment') && $contact->attachment) {
@@ -127,5 +113,45 @@ class ContactController extends Controller
     {
         $contact->delete();
         return redirect()->route('contacts.index')->with('success', 'Contact deleted successfully.');
+    }
+
+    /**
+     * Validate incoming contact form data for both store and update methods.
+     *
+     * Required fields:
+     * - name
+     * - phone
+     * - email - Email address format
+     * - description
+     * - attachment (optional)
+     *
+     * Phone validation accepts:
+     * - 10-digit numbers without separators (e.g., 9876543210)
+     * - Numbers with spaces or hyphens (e.g., 123-456-7890, 123 456 7890)
+     * - International formats (e.g., +91 9876543210)
+     * - Optional brackets around area code (e.g., (123) 456-7890)
+     *
+     * Disallowed:
+     * - Letters or special characters
+     * - Numbers shorter than 10 digits
+     * - Dot separators (e.g., 123.456.7890)
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<string, mixed> Validated input data
+     */
+    protected function validateContact(Request $request): array
+    {
+        return $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/^(\+?\d{1,4}[\s-]?)?(\(?\d{3}\)?[\s-]?)?\d{3}[\s-]?\d{4}$/'
+            ],
+            'email' => 'required|email',
+            'description' => 'required|string',
+            'attachment' => 'nullable|mimes:jpg,jpeg,png|max:2048',
+        ]);
     }
 }
