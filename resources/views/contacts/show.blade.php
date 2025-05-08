@@ -15,6 +15,9 @@
                         <p><strong>Phone:</strong> {{ $contact->phone }}</p>
                         <p><strong>Email:</strong> {{ $contact->email }}</p>
                         <p><strong>Description:</strong> {{ $contact->description }}</p>
+                        @if($contact->attachment)
+                            <img src="{{ asset('storage/' . $contact->attachment) }}" class="w-16">
+                        @endif
                         <br/>
                         <a href="{{ route('contacts.index') }}" class="mt-4 inline-block bg-gray-500 text-white px-4 py-2 rounded mt-4">Back</a>
                     </div>
