@@ -16,6 +16,7 @@
                             <th class="border px-4 py-2 text-left">Name</th>
                             <th class="border px-4 py-2 text-left">Phone</th>
                             <th class="border px-4 py-2 text-left">Email</th>
+                            <th class="border px-4 py-2 text-left">Attachment</th>
                             <th class="border px-4 py-2 text-left">Actions</th>
                         </tr>
                     </thead>
@@ -25,6 +26,11 @@
                             <td class="border px-4 py-2">{{ $contact->name }}</td>
                             <td class="border px-4 py-2">{{ $contact->phone }}</td>
                             <td class="border px-4 py-2">{{ $contact->email }}</td>
+                            <td class="border px-4 py-2">
+                                @if($contact->attachment)
+                                    <img src="{{ asset('storage/' . $contact->attachment) }}" class="w-16">
+                                @endif
+                            </td>
                             <td class="border px-4 py-2">
                                 <div class="flex items-center gap-4">
                                     <a href="{{ route('contacts.show', $contact) }}" class="text-blue-600">View</a>

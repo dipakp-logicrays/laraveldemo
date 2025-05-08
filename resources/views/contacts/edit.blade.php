@@ -11,7 +11,7 @@
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h1 class="text-xl font-semibold mb-4">{{ isset($contact) ? 'Edit' : 'Create' }} Contact</h1>
                 <div class="max-w-xl">
-                    <form method="POST" action="{{ route('contacts.update', $contact) }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('contacts.update', $contact) }}">
                         @include('contacts._form', ['contact' => $contact])
                     </form>
                 </div>

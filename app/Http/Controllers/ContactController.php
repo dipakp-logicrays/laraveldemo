@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Mail\ContactSubmitted;
 use App\Mail\ContactSubmittedAdmin;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class ContactController extends Controller
 {
@@ -37,7 +38,14 @@ class ContactController extends Controller
             'phone' => 'required|string|max:20',
             'email' => 'required|email',
             'description' => 'required|string',
+            'attachment' => 'nullable|mimes:jpg,jpeg,png|max:2048'
         ]);
+
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $path = $file->store('contact', 'public');
+            $validated['attachment'] = $path;
+        }
 
         $contact = Contact::create($validated);
 
@@ -77,8 +85,18 @@ class ContactController extends Controller
                 'phone' => 'required|string|max:20',
                 'email' => 'required|email',
                 'description' => 'required|string',
+                'attachment' => 'nullable|mimes:jpg,jpeg,png|max:2048'
             ]
         );
+
+        if ($request->hasFile('attachment')) {
+            if ($contact->attachment) {
+                Storage::disk('public')->delete($contact->attachment);
+            }
+            $file = $request->file('attachment');
+            $path = $file->store('contact', 'public');
+            $validated['attachment'] = $path;
+        }
 
         $contact->update($validated);
         return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
