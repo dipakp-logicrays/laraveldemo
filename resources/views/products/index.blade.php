@@ -38,6 +38,19 @@
                 @if ($products->isEmpty())
                     <p>No products found.</p>
                 @else
+                {{-- Search Bar --}}
+                <form method="GET" action="{{ route('products.index') }}" class="mb-4">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request()->search }}"
+                        placeholder="Search Product..."
+                        class="border p-2 rounded w-1/2"
+                    >
+                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded ml-3">
+                        Search
+                    </button>
+                </form>
                     <table>
                         <thead>
                             <tr>
@@ -68,6 +81,10 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{-- Pagination --}}
+                    <div class="mt-4">
+                        {{ $products->appends(request()->query())->links() }}
+                    </div>
                 @endif
             </div>
         </div>
