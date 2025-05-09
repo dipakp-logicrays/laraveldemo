@@ -29,10 +29,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Only Logged in users can access these routes
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::resource('contacts', ContactController::class);
+    Route::get('/faqs', [FaqController::class, 'index'])->name('faqs.index');
 });
 
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::resource('contacts', ContactController::class);
-Route::get('/faqs', [FaqController::class, 'index'])->name('faqs.index');
+
 
 require __DIR__.'/auth.php';
