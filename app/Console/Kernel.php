@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ContactFormCommand::class,
     ];
 
-    
     /**
      * Define the application's command schedule.
      */
