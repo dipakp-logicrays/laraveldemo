@@ -8,19 +8,6 @@ use Illuminate\Http\Request;
 class TagController extends Controller
 {
     /**
-     * Display posts for a specific tag
-     */
-    // public function show(Tag $tag)
-    // {
-    //     $posts = $tag->posts()
-    //                  ->published()
-    //                  ->latest('published_at')
-    //                  ->paginate(10);
-
-    //     return view('tags.show', compact('tag', 'posts'));
-    // }
-
-    /**
      * Display a listing of all tags
      */
     public function index()

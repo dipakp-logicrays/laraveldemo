@@ -6,15 +6,6 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    // public function show(Category $category)
-    // {
-    //     $posts = $category->posts()
-    //                      ->published()
-    //                      ->latest('published_at')
-    //                      ->paginate(10);
-
-    //     return view('categories.show', compact('category', 'posts'));
-    // }
     /**
      * Display a listing of all categories
      */

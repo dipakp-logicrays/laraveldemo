@@ -60,5 +60,20 @@ Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])
 Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
       ->name('tags.show');
 
+// Comment routes
+Route::middleware(['auth'])->group(function () {
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
+          ->name('comments.store');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])
+          ->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+          ->name('comments.destroy');
+
+    // Admin only
+    Route::put('/comments/{comment}/toggle-approval', [CommentController::class, 'toggleApproval'])
+          ->name('comments.toggle-approval')
+          ->middleware('admin'); // Create this middleware or use your own admin check
+});
+
 
 require __DIR__.'/auth.php';

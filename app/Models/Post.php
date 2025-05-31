@@ -89,4 +89,31 @@ class Post extends Model
                 $this->published_at &&
                 $this->published_at->lte(now());
     }
+
+    /**
+     * Get the comments for the post.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)
+                    ->approved()
+                    ->root()
+                    ->latest();
+    }
+
+    /**
+     * Get all comments including unapproved (for admin).
+     */
+    public function allComments()
+    {
+        return $this->hasMany(Comment::class)->root()->latest();
+    }
+
+    /**
+     * Get the comment count.
+     */
+    public function getCommentCountAttribute()
+    {
+        return $this->comments()->count();
+    }
 }

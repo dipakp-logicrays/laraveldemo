@@ -113,7 +113,56 @@
                                 </div>
                             </div>
                         @endif
+                        <!-- Comments Section -->
+                        <div class="mt-12 border-t pt-8">
+                            <h3 class="text-2xl font-semibold text-gray-900 mb-6">
+                                Comments ({{ $post->comment_count }})
+                            </h3>
+
+                            <!-- Comment Form -->
+                            @auth
+                                <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Leave a Comment</h4>
+                                    <form action="{{ route('comments.store', $post) }}" method="POST">
+                                        @csrf
+                                        <div class="mb-4">
+                                            <textarea name="content"
+                                                    rows="4"
+                                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 @error('content') border-red-300 @enderror"
+                                                    placeholder="Write your comment here..."
+                                                    required>{{ old('content') }}</textarea>
+                                            @error('content')
+                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <button type="submit"
+                                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Post Comment
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                                <div class="bg-gray-50 rounded-lg p-6 mb-8 text-center">
+                                    <p class="text-gray-600">
+                                        Please <a href="{{ route('login') }}" class="text-indigo-600 hover:text-indigo-500">login</a>
+                                        to leave a comment.
+                                    </p>
+                                </div>
+                            @endauth
+
+                            <!-- Comments List -->
+                            <div class="space-y-6">
+                                @forelse($post->comments as $comment)
+                                    @include('posts.partials.comment', ['comment' => $comment])
+                                @empty
+                                    <p class="text-gray-500 text-center py-8">
+                                        No comments yet. Be the first to comment!
+                                    </p>
+                                @endforelse
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
                 <!-- Related Posts -->
@@ -154,3 +203,25 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function showReplyForm(commentId) {
+        document.getElementById('reply-form-' + commentId).classList.remove('hidden');
+    }
+
+    function hideReplyForm(commentId) {
+        document.getElementById('reply-form-' + commentId).classList.add('hidden');
+    }
+
+    function editComment(commentId) {
+        document.getElementById('comment-content-' + commentId).classList.add('hidden');
+        document.getElementById('comment-edit-form-' + commentId).classList.remove('hidden');
+    }
+
+    function cancelEdit(commentId) {
+        document.getElementById('comment-content-' + commentId).classList.remove('hidden');
+        document.getElementById('comment-edit-form-' + commentId).classList.add('hidden');
+    }
+</script>
+@endpush
