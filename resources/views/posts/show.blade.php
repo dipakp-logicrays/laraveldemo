@@ -2,7 +2,40 @@
 
 @section('title', $post->title)
 
+@push('meta')
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ route('posts.show', $post) }}">
+    <meta property="og:title" content="{{ $post->title }}">
+    <meta property="og:description" content="{{ $post->excerpt }}">
+    @if($post->featured_image)
+        <meta property="og:image" content="{{ asset('storage/' . $post->featured_image) }}">
+    @endif
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ route('posts.show', $post) }}">
+    <meta property="twitter:title" content="{{ $post->title }}">
+    <meta property="twitter:description" content="{{ $post->excerpt }}">
+    @if($post->featured_image)
+        <meta property="twitter:image" content="{{ asset('storage/' . $post->featured_image) }}">
+    @endif
+
+    <!-- Article specific -->
+    <meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
+    <meta property="article:author" content="{{ $post->user->name }}">
+    <meta property="article:section" content="{{ $post->category->name }}">
+    @foreach($post->tags as $tag)
+        <meta property="article:tag" content="{{ $tag->name }}">
+    @endforeach
+@endpush
+
 @section('content')
+<!-- Reading Progress Bar -->
+<div class="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+    <div id="reading-progress" class="h-full bg-gradient-to-r from-indigo-500 to-purple-600 transition-all duration-300 ease-out" style="width: 0%"></div>
+</div>
+
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-8">
@@ -80,10 +113,21 @@
                             </div>
                         @endif
 
+                        <!-- Post Meta with Enhanced Reading Time -->
+                        @include('posts.partials.post-meta', ['post' => $post])
+
+                        <!-- Post content -->
                         <div class="prose prose-lg max-w-none text-gray-700">
                             {!! nl2br(e($post->content)) !!}
                         </div>
-
+                        <!-- Social Sharing -->
+                        <div class="mt-8 pt-8 border-t border-gray-200">
+                            <x-social-share
+                                :url="route('posts.show', $post)"
+                                :title="$post->title"
+                                :description="$post->excerpt"
+                            />
+                        </div>
                         @if(auth()->check() && auth()->id() === $post->user_id)
                             <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
                                 <h5 class="text-lg font-semibold text-gray-900 mb-3">Author Actions</h5>
@@ -202,6 +246,37 @@
         </div>
     </div>
 </div>
+
+<!-- Floating Share Button (Mobile) -->
+<div class="lg:hidden fixed bottom-6 right-6 z-40">
+    <button onclick="document.getElementById('mobile-share-modal').classList.remove('hidden')"
+            class="bg-indigo-600 text-white rounded-full p-4 shadow-lg hover:bg-indigo-700 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+        </svg>
+    </button>
+</div>
+
+<!-- Mobile Share Modal -->
+<div id="mobile-share-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
+    <div class="bg-white w-full rounded-t-xl p-6 transform transition-transform">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Share this post</h3>
+            <button onclick="document.getElementById('mobile-share-modal').classList.add('hidden')"
+                    class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <x-social-share
+            :url="route('posts.show', $post)"
+            :title="$post->title"
+            :description="$post->excerpt"
+        />
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -282,6 +357,100 @@
             console.error('Error:', error);
             alert('An error occurred while voting. Please try again.');
         });
+    }
+
+    // Reading Progress Bar
+    document.addEventListener('DOMContentLoaded', function() {
+        const progressBar = document.getElementById('reading-progress');
+        const article = document.querySelector('article');
+
+        if (progressBar && article) {
+            window.addEventListener('scroll', () => {
+                const articleTop = article.offsetTop;
+                const articleHeight = article.offsetHeight;
+                const windowHeight = window.innerHeight;
+                const scrolled = window.scrollY;
+
+                // Calculate progress based on article position
+                const start = articleTop - windowHeight;
+                const end = articleTop + articleHeight - windowHeight;
+                const progress = Math.max(0, Math.min(100, ((scrolled - start) / (end - start)) * 100));
+
+                progressBar.style.width = progress + '%';
+            });
+        }
+    });
+
+    // Copy Link Function
+    function copyPostLink(url) {
+        // Try using the modern clipboard API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function() {
+                showCopySuccess();
+            }).catch(function(err) {
+                // Fallback method
+                fallbackCopyTextToClipboard(url);
+            });
+        } else {
+            // Fallback method for older browsers
+            fallbackCopyTextToClipboard(url);
+        }
+    }
+
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.width = "2em";
+        textArea.style.height = "2em";
+        textArea.style.padding = 0;
+        textArea.style.border = "none";
+        textArea.style.outline = "none";
+        textArea.style.boxShadow = "none";
+        textArea.style.background = "transparent";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            showCopySuccess();
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+            alert('Failed to copy link');
+        }
+
+        document.body.removeChild(textArea);
+    }
+
+    function showCopySuccess() {
+        const button = document.getElementById('copy-link-btn');
+        const originalClasses = button.className;
+
+        // Change button appearance
+        button.className = 'inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white transition-colors';
+        button.setAttribute('title', 'Copied!');
+
+        // Change icon to checkmark
+        button.innerHTML = `
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        `;
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+            button.className = originalClasses;
+            button.setAttribute('title', 'Copy link');
+            button.innerHTML = `
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+            `;
+        }, 2000);
     }
 </script>
 @endpush

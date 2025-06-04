@@ -69,12 +69,37 @@ class Post extends Model
         return $value ?: Str::limit($this->content, 150);
     }
 
+    /**
+     * Get estimated reading time with more accuracy
+     */
     public function getReadingTimeAttribute()
     {
-        $words = str_word_count(strip_tags($this->content));
-        $minutes = ceil($words / 200); // Average reading speed
+        // Strip HTML tags for accurate count
+        $text = strip_tags($this->content);
 
-        return $minutes . ' min read';
+        // Count words
+        $wordCount = str_word_count($text);
+
+        // Count images (if you store them in content)
+        $imageCount = substr_count($this->content, '<img');
+
+        // Average reading speed (words per minute)
+        $wordsPerMinute = 200;
+
+        // Add 12 seconds for each image
+        $imageTime = ($imageCount * 12) / 60;
+
+        // Calculate reading time
+        $minutes = ceil($wordCount / $wordsPerMinute + $imageTime);
+
+        // Format the output
+        if ($minutes == 1) {
+            return '1 min read';
+        } elseif ($minutes < 1) {
+            return 'Less than 1 min';
+        } else {
+            return $minutes . ' min read';
+        }
     }
 
     // Helper Methods
@@ -115,5 +140,21 @@ class Post extends Model
     public function getCommentCountAttribute()
     {
         return $this->comments()->count();
+    }
+
+    /**
+     * Get reading time in seconds (useful for structured data)
+     */
+    public function getReadingTimeSecondsAttribute()
+    {
+        $text = strip_tags($this->content);
+        $wordCount = str_word_count($text);
+        $imageCount = substr_count($this->content, '<img');
+
+        $wordsPerMinute = 200;
+        $readingSeconds = ($wordCount / $wordsPerMinute) * 60;
+        $imageSeconds = $imageCount * 12;
+
+        return ceil($readingSeconds + $imageSeconds);
     }
 }
