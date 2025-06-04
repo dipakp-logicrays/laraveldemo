@@ -96,4 +96,98 @@ class Comment extends Model
     {
         return $this->created_at->diffForHumans();
     }
+
+    /**
+     * Get the votes for the comment.
+     */
+    public function votes()
+    {
+        return $this->hasMany(CommentVote::class);
+    }
+
+    /**
+     * Get the likes for the comment.
+     */
+    public function likes()
+    {
+        return $this->hasMany(CommentVote::class)->where('type', 'like');
+    }
+
+    /**
+     * Get the dislikes for the comment.
+     */
+    public function dislikes()
+    {
+        return $this->hasMany(CommentVote::class)->where('type', 'dislike');
+    }
+
+    /**
+     * Get the like count.
+     */
+    public function getLikesCountAttribute()
+    {
+        return $this->likes()->count();
+    }
+
+    /**
+     * Get the dislike count.
+     */
+    public function getDislikesCountAttribute()
+    {
+        return $this->dislikes()->count();
+    }
+
+    /**
+     * Get the net vote count (likes - dislikes).
+     */
+    public function getNetVotesAttribute()
+    {
+        return $this->likes_count - $this->dislikes_count;
+    }
+
+    /**
+     * Check if the user has voted on this comment.
+     */
+    public function hasVoted($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        if (!$userId) {
+            return false;
+        }
+
+        return $this->votes()->where('user_id', $userId)->exists();
+    }
+
+    /**
+     * Get the user's vote type.
+     */
+    public function getUserVote($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        if (!$userId) {
+            return null;
+        }
+
+        $vote = $this->votes()->where('user_id', $userId)->first();
+
+        return $vote ? $vote->type : null;
+    }
+
+    /**
+     * Check if the user has liked this comment.
+     */
+    public function isLikedBy($userId = null)
+    {
+        return $this->getUserVote($userId) === 'like';
+    }
+
+    /**
+     * Check if the user has disliked this comment.
+     */
+    public function isDislikedBy($userId = null)
+    {
+        return $this->getUserVote($userId) === 'dislike';
+    }
 }

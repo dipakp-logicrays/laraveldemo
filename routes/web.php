@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\CommentVoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+});
+
+// Comment voting routes
+Route::middleware(['auth'])->group(function () {
+    Route::post('/comments/{comment}/vote', [CommentVoteController::class, 'vote'])
+          ->name('comments.vote');
+    Route::delete('/comments/{comment}/vote', [CommentVoteController::class, 'removeVote'])
+          ->name('comments.removeVote');
 });
 
 require __DIR__.'/auth.php';

@@ -206,6 +206,7 @@
 
 @push('scripts')
 <script>
+    // Existing comment functions
     function showReplyForm(commentId) {
         document.getElementById('reply-form-' + commentId).classList.remove('hidden');
     }
@@ -222,6 +223,65 @@
     function cancelEdit(commentId) {
         document.getElementById('comment-content-' + commentId).classList.remove('hidden');
         document.getElementById('comment-edit-form-' + commentId).classList.add('hidden');
+    }
+
+    // Voting function
+    function voteComment(commentId, type) {
+        // Get CSRF token
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Send AJAX request
+        fetch(`/comments/${commentId}/vote`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                type: type
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update vote counts
+                document.getElementById('likes-count-' + commentId).textContent = data.likes_count;
+                document.getElementById('dislikes-count-' + commentId).textContent = data.dislikes_count;
+
+                // Update button styles
+                const voteButtons = document.getElementById('vote-buttons-' + commentId);
+                const likeButton = voteButtons.querySelector('button:first-child');
+                const dislikeButton = voteButtons.querySelector('button:last-child');
+                const likeSvg = likeButton.querySelector('svg');
+                const dislikeSvg = dislikeButton.querySelector('svg');
+
+                // Reset styles
+                likeButton.classList.remove('text-green-600');
+                likeButton.classList.add('text-gray-500');
+                likeSvg.setAttribute('fill', 'none');
+
+                dislikeButton.classList.remove('text-red-600');
+                dislikeButton.classList.add('text-gray-500');
+                dislikeSvg.setAttribute('fill', 'none');
+
+                // Apply active styles based on user vote
+                if (data.user_vote === 'like') {
+                    likeButton.classList.remove('text-gray-500');
+                    likeButton.classList.add('text-green-600');
+                    likeSvg.setAttribute('fill', 'currentColor');
+                } else if (data.user_vote === 'dislike') {
+                    dislikeButton.classList.remove('text-gray-500');
+                    dislikeButton.classList.add('text-red-600');
+                    dislikeSvg.setAttribute('fill', 'currentColor');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while voting. Please try again.');
+        });
     }
 </script>
 @endpush
