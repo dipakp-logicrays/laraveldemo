@@ -103,6 +103,12 @@ mysql -u root -p laraveldemo < backup.sql
 mysqldump -u root -p laraveldemo > backup.sql
 ```
 
+## Features
+- Blog system
+- Product List
+- Contacts - CRUD Operation with send email
+- FAQs - CRUD operation with API Integration
+
 ## ⚙️ Laravel Artisan Commands Guide
 
 ### ✔ Common Artisan Commands
