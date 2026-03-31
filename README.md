@@ -129,7 +129,15 @@ mysql -u root -p laraveldemo < db/laraveldemo.sql
 > php artisan migrate --seed
 > ```
 
-### Step 7: Build frontend assets
+### Step 7: Create storage symlink
+
+This creates a symbolic link from `public/storage` to `storage/app/public` so uploaded images are accessible from the browser:
+
+```bash
+php artisan storage:link
+```
+
+### Step 8: Build frontend assets
 
 ```bash
 npm run build
@@ -139,7 +147,7 @@ npm run build
 
 ## 5. Local Environment Setup
 
-### Step 8: Add Host Entry
+### Step 9: Add Host Entry
 
 Add the following line to `/etc/hosts`:
 
@@ -148,7 +156,7 @@ Add the following line to `/etc/hosts`:
 127.0.0.1 laraveldemo.local
 ```
 
-### Step 9: Apache Configuration
+### Step 10: Apache Configuration
 
 Add the following line to `/etc/apache2/sites-available/000-default.conf`:
 
@@ -163,7 +171,7 @@ Then restart Apache:
 sudo systemctl restart apache2
 ```
 
-### Step 10: Open the project
+### Step 11: Open the project
 
 Visit http://laraveldemo.local in your browser. You're all set!
 
