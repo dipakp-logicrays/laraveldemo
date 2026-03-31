@@ -139,6 +139,14 @@ php artisan storage:link
 
 ### Step 8: Build frontend assets
 
+For development (with hot-reloading):
+
+```bash
+npm run dev
+```
+
+For production build:
+
 ```bash
 npm run build
 ```
