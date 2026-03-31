@@ -46,36 +46,51 @@ GitHub Repo: [https://github.com/dipakp-logicrays/laraveldemo](https://github.co
 ---
 
 ## 🧰 Requirements
-- PHP 8.x
+- PHP 8.2+
 - Composer
+- Node.js & npm
 - MySQL or MariaDB
-- Laravel CLI (`laravel installer`)
+- Apache (recommended) or Laravel's built-in server
 - Git
 
 ---
 
-## 🚀 Installation Instructions
+## 🚀 Installation Instructions (Step-by-Step)
+
+Follow these steps to set up the project on your system:
+
+### Step 1: Clone the project
 
 ```bash
-# Step 1: Clone the project
 cd /var/www/html/
 git clone https://github.com/dipakp-logicrays/laraveldemo.git
-
-# Step 2: Navigate into project directory
 cd laraveldemo
+```
 
-# Step 3: Install dependencies
+### Step 2: Install PHP dependencies
+
+```bash
 composer install
+```
 
-# Step 4: Copy environment file
+### Step 3: Install Node.js dependencies
+
+```bash
+npm install
+```
+
+### Step 4: Copy environment file and generate app key
+
+```bash
 cp .env.example .env
-
-# Step 5: Generate app key
 php artisan key:generate
+```
 
-# Step 6: Setup database (create manually or via MySQL)
-Update your .env file with correct DB info:
+### Step 5: Configure database in `.env`
 
+Open the `.env` file and update the database credentials:
+
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -84,23 +99,128 @@ DB_USERNAME=root
 DB_PASSWORD=your_password
 ```
 
+### Step 6: Create database and import SQL
+
+The database SQL file is included in the repository at `db/laraveldemo.sql`. Create the database and import it:
+
+```bash
+# Login to MySQL and create the database
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS laraveldemo;"
+
+# Import the database
+mysql -u root -p laraveldemo < db/laraveldemo.sql
+```
+
+> **Note:** If you prefer to start with a fresh database instead, you can run migrations:
+> ```bash
+> php artisan migrate --seed
+> ```
+
+### Step 7: Build frontend assets
+
+```bash
+npm run build
+```
+
+### Step 8: Set up local environment (hosts & Apache)
+
+See the [Local Environment Setup](#local-environment-setup) section below.
+
+### Step 9: Open the project
+
+Visit http://laraveldemo.local in your browser. You're all set!
+
+---
+
+## 🏃 Running the Project
+
+After installation, run these commands every time you start working on the project:
+
+```bash
+# Start Vite dev server (for frontend hot-reloading with Tailwind CSS)
+npm run dev
+```
+
+If you are using Apache with the virtual host setup (see Local Environment Setup below), the project will be available at:
+- http://laraveldemo.local
+
+If you are **not** using Apache, you can use Laravel's built-in server:
+
+```bash
+# Start Laravel development server
+php artisan serve
+```
+
+### Quick Reference — Commands to Run After `git pull`
+
+```bash
+composer install          # Install any new PHP packages
+npm install               # Install any new Node.js packages
+php artisan migrate       # Run any new database migrations
+npm run build             # Rebuild frontend assets (or use `npm run dev` for development)
+```
+
+### Useful Commands During Development
+
+```bash
+npm run dev               # Start Vite dev server (hot-reload for CSS/JS changes)
+npm run build             # Build production-ready frontend assets
+php artisan optimize      # Cache config, routes, and views
+php artisan optimize:clear # Clear all cached files
+```
+
+## Local Environment Setup
+
+### Add Host Entry
+
+Add the following line to `/etc/hosts`:
+
+```
+# Laravel demo
+127.0.0.1 laraveldemo.local
+```
+
+### Apache Configuration
+
+Add the following line to `/etc/apache2/sites-available/000-default.conf`:
+
+```
+# Laravel project setup
+Include /var/www/html/laraveldemo/proxy-le-ssl.conf
+```
+
+Then restart Apache:
+
+```bash
+sudo systemctl restart apache2
+```
+
+### Login Details
+
+- **URL:** http://laraveldemo.local/login
+- **Email:** dipakp@logicrays.com
+- **Password:** dipak@123
+
+---
+
 ## 🗃️ MySQL Database Setup
+
+The database SQL dump is included in the repo at `db/laraveldemo.sql`.
 
 ### Create Database:
 
-```bash
-CREATE DATABASE laraveldemo;
+```sql
+CREATE DATABASE IF NOT EXISTS laraveldemo;
 ```
 
-### Import SQL (optional backup):
+### Import SQL:
 ```bash
-mysql -u root -p laraveldemo < backup.sql
+mysql -u root -p laraveldemo < db/laraveldemo.sql
 ```
 
-
-### Export SQL::
+### Export SQL (to update the dump):
 ```bash
-mysqldump -u root -p laraveldemo > backup.sql
+mysqldump -u root -p laraveldemo > db/laraveldemo.sql
 ```
 
 ## Features
