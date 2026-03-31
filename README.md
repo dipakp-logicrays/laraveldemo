@@ -29,6 +29,8 @@ You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
+---
+
 # Laravel Demo Project
 
 Welcome to the **LaravelDemo** repository! This project is a beginner-friendly Laravel application to understand the core fundamentals of Laravel framework step-by-step.
@@ -37,7 +39,8 @@ GitHub Repo: [https://github.com/dipakp-logicrays/laraveldemo](https://github.co
 
 ---
 
-## 📁 Project Information
+## 1. 📁 Project Information
+
 - **Project Name**: LaravelDemo
 - **Framework**: Laravel 10+
 - **Purpose**: Practice Laravel basics — MVC, migrations, seeders, Blade templates, database, and artisan commands.
@@ -45,7 +48,17 @@ GitHub Repo: [https://github.com/dipakp-logicrays/laraveldemo](https://github.co
 
 ---
 
-## 🧰 Requirements
+## 2. Features
+
+- Blog system
+- Product List
+- Contacts - CRUD Operation with send email
+- FAQs - CRUD operation with API Integration
+
+---
+
+## 3. 🧰 Requirements
+
 - PHP 8.2+
 - Composer
 - Node.js & npm
@@ -55,7 +68,7 @@ GitHub Repo: [https://github.com/dipakp-logicrays/laraveldemo](https://github.co
 
 ---
 
-## 🚀 Installation Instructions (Step-by-Step)
+## 4. 🚀 Installation Instructions (Step-by-Step)
 
 Follow these steps to set up the project on your system:
 
@@ -122,17 +135,41 @@ mysql -u root -p laraveldemo < db/laraveldemo.sql
 npm run build
 ```
 
-### Step 8: Set up local environment (hosts & Apache)
+---
 
-See the [Local Environment Setup](#local-environment-setup) section below.
+## 5. Local Environment Setup
 
-### Step 9: Open the project
+### Step 8: Add Host Entry
+
+Add the following line to `/etc/hosts`:
+
+```
+# Laravel demo
+127.0.0.1 laraveldemo.local
+```
+
+### Step 9: Apache Configuration
+
+Add the following line to `/etc/apache2/sites-available/000-default.conf`:
+
+```
+# Laravel project setup
+Include /var/www/html/laraveldemo/proxy-le-ssl.conf
+```
+
+Then restart Apache:
+
+```bash
+sudo systemctl restart apache2
+```
+
+### Step 10: Open the project
 
 Visit http://laraveldemo.local in your browser. You're all set!
 
 ---
 
-## 🏃 Running the Project
+## 6. 🏃 Running the Project
 
 After installation, run these commands every time you start working on the project:
 
@@ -141,7 +178,7 @@ After installation, run these commands every time you start working on the proje
 npm run dev
 ```
 
-If you are using Apache with the virtual host setup (see Local Environment Setup below), the project will be available at:
+If you are using Apache with the virtual host setup, the project will be available at:
 - http://laraveldemo.local
 
 If you are **not** using Apache, you can use Laravel's built-in server:
@@ -169,33 +206,9 @@ php artisan optimize      # Cache config, routes, and views
 php artisan optimize:clear # Clear all cached files
 ```
 
-## Local Environment Setup
+---
 
-### Add Host Entry
-
-Add the following line to `/etc/hosts`:
-
-```
-# Laravel demo
-127.0.0.1 laraveldemo.local
-```
-
-### Apache Configuration
-
-Add the following line to `/etc/apache2/sites-available/000-default.conf`:
-
-```
-# Laravel project setup
-Include /var/www/html/laraveldemo/proxy-le-ssl.conf
-```
-
-Then restart Apache:
-
-```bash
-sudo systemctl restart apache2
-```
-
-### Login Details
+## 7. Login Details
 
 - **URL:** http://laraveldemo.local/login
 - **Email:** dipakp@logicrays.com
@@ -203,47 +216,10 @@ sudo systemctl restart apache2
 
 ---
 
-## 🗃️ MySQL Database Setup
-
-The database SQL dump is included in the repo at `db/laraveldemo.sql`.
-
-### Create Database:
-
-```sql
-CREATE DATABASE IF NOT EXISTS laraveldemo;
-```
-
-### Import SQL:
-```bash
-mysql -u root -p laraveldemo < db/laraveldemo.sql
-```
-
-### Export SQL (to update the dump):
-```bash
-mysqldump -u root -p laraveldemo > db/laraveldemo.sql
-```
-
-## Features
-- Blog system
-- Product List
-- Contacts - CRUD Operation with send email
-- FAQs - CRUD operation with API Integration
-
-## ⚙️ Laravel Artisan Commands Guide
-
-### ✔ Common Artisan Commands
-
-```bash
-php artisan list                        # List all commands
-php artisan route:list                 # View registered routes
-php artisan serve                      # Start local server
-php artisan config:cache               # Cache config files
-php artisan migrate                    # Run all migrations
-php artisan db:seed                    # Run seeders
-php artisan migrate:refresh --seed    # Reset DB and seed again
-```
+## 8. ⚙️ Laravel Artisan Commands Guide
 
 ### 🛠 Generate Files
+
 ```bash
 php artisan make:controller ProductController
 php artisan make:model Product -mf       # Model with migration and factory
@@ -252,14 +228,19 @@ php artisan make:seeder ProductSeeder
 php artisan make:factory ProductFactory --model=Product
 ```
 
-## 🔄 Laravel Project Flow Cycle (Basic)
+---
+
+## 9. 🔄 Laravel Project Flow Cycle (Basic)
 
 Request -> Route -> Controller -> Model -> DB -> View (Blade)
 
-## 🙏 Credits
+---
+
+## 10. 🙏 Credits
 
 Created by Dipak for learning Laravel from scratch using real project structure and flow.
 
+---
 
 ## Code of Conduct
 
