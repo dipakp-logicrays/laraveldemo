@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Post;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -22,9 +21,9 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with(['category', 'user', 'tags'])
-                    ->published()
-                    ->latest('published_at')
-                    ->paginate(10);
+            ->published()
+            ->latest('published_at')
+            ->paginate(10);
 
         return view('posts.index', compact('posts'));
     }
@@ -78,7 +77,7 @@ class PostController extends Controller
         }
 
         return redirect()->route('posts.show', $post)
-                         ->with('success', 'Post created successfully!');
+            ->with('success', 'Post created successfully!');
     }
 
     /**
@@ -87,7 +86,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         // Only show published posts to guests
-        if (!auth()->check() && !$post->isPublished()) {
+        if (! auth()->check() && ! $post->isPublished()) {
             abort(404);
         }
 
@@ -101,10 +100,10 @@ class PostController extends Controller
 
         // Get related posts
         $relatedPosts = Post::where('category_id', $post->category_id)
-                            ->where('id', '!=', $post->id)
-                            ->published()
-                            ->limit(3)
-                            ->get();
+            ->where('id', '!=', $post->id)
+            ->published()
+            ->limit(3)
+            ->get();
 
         return view('posts.show', compact('post', 'relatedPosts'));
     }
@@ -159,7 +158,7 @@ class PostController extends Controller
         }
 
         // Handle publishing
-        if ($request->status === 'published' && !$post->published_at) {
+        if ($request->status === 'published' && ! $post->published_at) {
             $validated['published_at'] = now();
         } elseif ($request->status === 'draft') {
             $validated['published_at'] = null;
@@ -172,7 +171,7 @@ class PostController extends Controller
         $post->tags()->sync($request->tags ?? []);
 
         return redirect()->route('posts.show', $post)
-                         ->with('success', 'Post updated successfully!');
+            ->with('success', 'Post updated successfully!');
     }
 
     /**
@@ -194,7 +193,7 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('posts.index')
-                         ->with('success', 'Post deleted successfully!');
+            ->with('success', 'Post deleted successfully!');
     }
 
     /**
@@ -203,9 +202,9 @@ class PostController extends Controller
     public function myPosts()
     {
         $posts = Post::where('user_id', auth()->id())
-                     ->with(['category', 'tags'])
-                     ->latest()
-                     ->paginate(10);
+            ->with(['category', 'tags'])
+            ->latest()
+            ->paginate(10);
 
         return view('posts.my-posts', compact('posts'));
     }
@@ -217,14 +216,14 @@ class PostController extends Controller
     {
         $query = $request->get('q');
 
-        $posts = Post::where(function($q) use ($query) {
-                        $q->where('title', 'like', "%{$query}%")
-                          ->orWhere('content', 'like', "%{$query}%");
-                     })
-                     ->published()
-                     ->with(['category', 'user', 'tags'])
-                     ->paginate(10)
-                     ->withQueryString();
+        $posts = Post::where(function ($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+                ->orWhere('content', 'like', "%{$query}%");
+        })
+            ->published()
+            ->with(['category', 'user', 'tags'])
+            ->paginate(10)
+            ->withQueryString();
 
         return view('posts.search', compact('posts', 'query'));
     }

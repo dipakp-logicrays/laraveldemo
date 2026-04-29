@@ -42,13 +42,13 @@ class NewCommentNotification extends Notification implements ShouldQueue
     {
         $postTitle = $this->comment->post->title;
         $commenterName = $this->comment->user->name;
-        $postUrl = route('posts.show', $this->comment->post) . '#comment-' . $this->comment->id;
+        $postUrl = route('posts.show', $this->comment->post).'#comment-'.$this->comment->id;
 
         return (new MailMessage)
             ->subject("New comment on your post \"{$postTitle}\"")
             ->greeting("Hello {$notifiable->name}!")
             ->line("{$commenterName} commented on your post \"{$postTitle}\":")
-            ->line("Comment: \"" . \Str::limit($this->comment->content, 150) . "\"")
+            ->line('Comment: "'.\Str::limit($this->comment->content, 150).'"')
             ->action('View Comment', $postUrl)
             ->line('Keep creating great content!');
     }

@@ -2,10 +2,10 @@
 
 namespace App\View\Composers;
 
-use Illuminate\View\View;
 use App\Models\Category;
-use App\Models\Tag;
 use App\Models\Post;
+use App\Models\Tag;
+use Illuminate\View\View;
 
 class SidebarComposer
 {
@@ -21,9 +21,9 @@ class SidebarComposer
         return Category::withCount(['posts' => function ($query) {
             $query->published();
         }])
-        ->having('posts_count', '>', 0)
-        ->orderBy('name')
-        ->get();
+            ->having('posts_count', '>', 0)
+            ->orderBy('name')
+            ->get();
     }
 
     private function getTags()
@@ -31,10 +31,10 @@ class SidebarComposer
         return Tag::withCount(['posts' => function ($query) {
             $query->published();
         }])
-        ->having('posts_count', '>', 0)
-        ->orderBy('posts_count', 'desc')
-        ->limit(10)
-        ->get();
+            ->having('posts_count', '>', 0)
+            ->orderBy('posts_count', 'desc')
+            ->limit(10)
+            ->get();
     }
 
     private function getRecentPosts()

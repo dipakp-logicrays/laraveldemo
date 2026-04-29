@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Tag;
+use Illuminate\Database\Seeder;
 
 class TagSeeder extends Seeder
 {
@@ -16,7 +15,7 @@ class TagSeeder extends Seeder
         $tags = [
             'Laravel', 'PHP', 'JavaScript', 'Vue.js', 'React',
             'Tutorial', 'Tips', 'News', 'Review', 'Guide',
-            'Beginner', 'Advanced', 'Database', 'API', 'Security'
+            'Beginner', 'Advanced', 'Database', 'API', 'Security',
         ];
 
         foreach ($tags as $tag) {

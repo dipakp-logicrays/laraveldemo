@@ -3,32 +3,32 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Faq;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class FaqController extends Controller
 {
     public function index(Request $request)
     {
-        $query = FAQ::query();
+        $query = Faq::query();
 
         // Optional search
         if ($request->has('search') && $request->search != '') {
-            $query->where('question', 'like', '%' . $request->search . '%')
-                ->orWhere('answer', 'like', '%' . $request->search . '%');
+            $query->where('question', 'like', '%'.$request->search.'%')
+                ->orWhere('answer', 'like', '%'.$request->search.'%');
         }
 
         // Valid sortable columns
         $validSortBy = ['question', 'answer', 'created_at'];
         $sortBy = $request->input('sort_by', 'created_at');
-        if (!in_array($sortBy, $validSortBy)) {
+        if (! in_array($sortBy, $validSortBy)) {
             $sortBy = 'created_at';
         }
 
         // Sort direction
         $sortDirection = strtolower($request->input('sort', 'desc'));
-        if (!in_array($sortDirection, ['asc', 'desc'])) {
+        if (! in_array($sortDirection, ['asc', 'desc'])) {
             $sortDirection = 'desc';
         }
 
@@ -42,7 +42,7 @@ class FaqController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'FAQ list fetched successfully.',
-            'data' => $faqs
+            'data' => $faqs,
         ]);
     }
 
@@ -74,7 +74,7 @@ class FaqController extends Controller
     {
         $faq = Faq::find($id);
 
-        if (!$faq) {
+        if (! $faq) {
             return response()->json([
                 'success' => false,
                 'message' => 'FAQ not found.',
@@ -92,7 +92,7 @@ class FaqController extends Controller
     {
         $faq = Faq::find($id);
 
-        if (!$faq) {
+        if (! $faq) {
             return response()->json([
                 'success' => false,
                 'message' => 'FAQ not found.',
@@ -125,7 +125,7 @@ class FaqController extends Controller
     {
         $faq = Faq::find($id);
 
-        if (!$faq) {
+        if (! $faq) {
             return response()->json([
                 'success' => false,
                 'message' => 'FAQ not found.',

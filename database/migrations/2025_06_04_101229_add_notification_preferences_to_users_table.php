@@ -27,7 +27,7 @@ return new class extends Migration
             $table->dropColumn([
                 'email_notifications',
                 'comment_reply_notifications',
-                'new_comment_notifications'
+                'new_comment_notifications',
             ]);
         });
     }

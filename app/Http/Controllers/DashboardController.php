@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use App\Models\Comment;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Comment;
+use App\Models\Post;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -18,7 +17,7 @@ class DashboardController extends Controller
         $totalPosts = Post::all()->count();
         $publishedPosts = Post::all()->where('status', 'published')->count();
         $totalViews = Post::all()->sum('views');
-        $totalComments = Comment::whereHas('post', function($query) use ($user) {
+        $totalComments = Comment::whereHas('post', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })->count();
 
@@ -29,9 +28,9 @@ class DashboardController extends Controller
             ->get();
 
         // // Recent comments on user's posts
-        $recentComments = Comment::whereHas('post', function($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
+        $recentComments = Comment::whereHas('post', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
             ->with(['user', 'post'])
             ->latest()
             ->take(5)
@@ -45,9 +44,9 @@ class DashboardController extends Controller
             ->get();
 
         // Categories with post count
-        $categoriesWithCount = Category::withCount(['posts' => function($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }])
+        $categoriesWithCount = Category::withCount(['posts' => function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])
             ->having('posts_count', '>', 0)
             ->get();
 

@@ -14,7 +14,7 @@ class Comment extends Model
         'user_id',
         'parent_id',
         'content',
-        'is_approved'
+        'is_approved',
     ];
 
     protected $casts = [
@@ -53,8 +53,8 @@ class Comment extends Model
     public function replies()
     {
         return $this->hasMany(Comment::class, 'parent_id')
-                    ->where('is_approved', true)
-                    ->latest();
+            ->where('is_approved', true)
+            ->latest();
     }
 
     /**
@@ -152,7 +152,7 @@ class Comment extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        if (!$userId) {
+        if (! $userId) {
             return false;
         }
 
@@ -166,7 +166,7 @@ class Comment extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        if (!$userId) {
+        if (! $userId) {
             return null;
         }
 

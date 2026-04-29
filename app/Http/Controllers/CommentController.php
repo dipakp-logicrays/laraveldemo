@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use App\Notifications\CommentReplyNotification;
 use App\Notifications\NewCommentNotification;
+use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
@@ -23,7 +22,7 @@ class CommentController extends Controller
     {
         $validated = $request->validate([
             'content' => 'required|string|min:3|max:1000',
-            'parent_id' => 'nullable|exists:comments,id'
+            'parent_id' => 'nullable|exists:comments,id',
         ]);
 
         // Check if parent comment belongs to the same post
@@ -58,11 +57,11 @@ class CommentController extends Controller
         }
 
         $validated = $request->validate([
-            'content' => 'required|string|min:3|max:1000'
+            'content' => 'required|string|min:3|max:1000',
         ]);
 
         $comment->update([
-            'content' => $validated['content']
+            'content' => $validated['content'],
         ]);
 
         return back()->with('success', 'Comment updated successfully!');
@@ -74,7 +73,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         // Check if user can delete this comment
-        if ($comment->user_id !== auth()->id() && !auth()->user()->is_admin) {
+        if ($comment->user_id !== auth()->id() && ! auth()->user()->is_admin) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -94,15 +93,16 @@ class CommentController extends Controller
     public function toggleApproval(Comment $comment)
     {
         // Check if user is admin
-        if (!auth()->user()->is_admin) {
+        if (! auth()->user()->is_admin) {
             abort(403, 'Unauthorized action.');
         }
 
         $comment->update([
-            'is_approved' => !$comment->is_approved
+            'is_approved' => ! $comment->is_approved,
         ]);
 
         $status = $comment->is_approved ? 'approved' : 'unapproved';
+
         return back()->with('success', "Comment {$status} successfully!");
     }
 
@@ -115,13 +115,13 @@ class CommentController extends Controller
         if ($parentComment) {
             // Don't notify if replying to own comment
             // if ($parentComment->user_id !== $comment->user_id) {
-                $parentComment->user->notify(new CommentReplyNotification($comment, $parentComment));
+            $parentComment->user->notify(new CommentReplyNotification($comment, $parentComment));
             // }
         } else {
             // This is a root comment on a post
             // Notify post author if it's not their own comment
             // if ($comment->post->user_id !== $comment->user_id) {
-                $comment->post->user->notify(new NewCommentNotification($comment));
+            $comment->post->user->notify(new NewCommentNotification($comment));
             // }
         }
 

@@ -12,7 +12,7 @@ class CommentVote extends Model
     protected $fillable = [
         'comment_id',
         'user_id',
-        'type'
+        'type',
     ];
 
     /**

@@ -20,7 +20,7 @@ class Post extends Model
         'user_id',
         'status',
         'published_at',
-        'views'
+        'views',
     ];
 
     protected $casts = [
@@ -48,8 +48,8 @@ class Post extends Model
     public function scopePublished($query)
     {
         return $query->where('status', 'published')
-                    ->whereNotNull('published_at')
-                    ->where('published_at', '<=', now());
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 
     public function scopeDraft($query)
@@ -98,7 +98,7 @@ class Post extends Model
         } elseif ($minutes < 1) {
             return 'Less than 1 min';
         } else {
-            return $minutes . ' min read';
+            return $minutes.' min read';
         }
     }
 
@@ -121,9 +121,9 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class)
-                    ->approved()
-                    ->root()
-                    ->latest();
+            ->approved()
+            ->root()
+            ->latest();
     }
 
     /**

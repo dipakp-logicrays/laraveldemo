@@ -2,11 +2,8 @@
 
 namespace App\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class FailedJobListener
 {
@@ -39,7 +36,7 @@ class FailedJobListener
         // Send email notification
         Mail::raw("A job has failed: {$jobName}\n\nError: {$exceptionMessage}", function ($message) {
             $message->to('admin@example.com')
-                    ->subject('Laravel Job Failed');
+                ->subject('Laravel Job Failed');
         });
     }
 }

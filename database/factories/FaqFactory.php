@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Faq;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Faq>
+ * @extends Factory<Faq>
  */
 class FaqFactory extends Factory
 {

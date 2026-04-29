@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Comment;
+use App\Models\CommentVote;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use App\Models\CommentVote;
 
 class CommentSeeder extends Seeder
 {
@@ -18,6 +18,7 @@ class CommentSeeder extends Seeder
         // Make sure we have users and posts
         if ($users->count() == 0 || $posts->count() == 0) {
             $this->command->info('No users or posts found. Please seed users and posts first.');
+
             return;
         }
 
@@ -86,7 +87,7 @@ class CommentSeeder extends Seeder
                 CommentVote::create([
                     'comment_id' => $comment->id,
                     'user_id' => $user->id,
-                    'type' => rand(0, 1) ? 'like' : 'dislike'
+                    'type' => rand(0, 1) ? 'like' : 'dislike',
                 ]);
             }
         }

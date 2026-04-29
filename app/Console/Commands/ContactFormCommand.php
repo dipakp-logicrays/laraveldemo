@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Contact;
-use App\Http\Controllers\ContactController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactSubmitted;
 use App\Mail\ContactSubmittedAdmin;
+use App\Models\Contact;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class ContactFormCommand extends Command
 {
@@ -56,6 +54,7 @@ class ContactFormCommand extends Command
             foreach ($validator->errors()->all() as $message) {
                 $this->line(" - $message");
             }
+
             return;
         }
 
