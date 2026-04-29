@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\FaqController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\TagController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CommentVoteController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TagController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +47,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/faqs', [FaqController::class, 'index'])->name('faqs.index');
 });
 
-
 // Public routes
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/search', [PostController::class, 'search'])->name('posts.search');
@@ -62,27 +61,26 @@ Route::middleware('auth')->group(function () {
 
 // Category routes (optional)
 Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])
-      ->name('categories.show');
+    ->name('categories.show');
 
 // Tag routes (optional)
 Route::get('/tags/{tag:slug}', [TagController::class, 'show'])
-      ->name('tags.show');
+    ->name('tags.show');
 
 // Comment routes
 Route::middleware(['auth'])->group(function () {
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
-          ->name('comments.store');
+        ->name('comments.store');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])
-          ->name('comments.update');
+        ->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
-          ->name('comments.destroy');
+        ->name('comments.destroy');
 
     // Admin only
     Route::put('/comments/{comment}/toggle-approval', [CommentController::class, 'toggleApproval'])
-          ->name('comments.toggle-approval')
-          ->middleware('admin'); // Create this middleware or use your own admin check
+        ->name('comments.toggle-approval')
+        ->middleware('admin'); // Create this middleware or use your own admin check
 });
-
 
 // Notification routes
 Route::middleware(['auth'])->group(function () {
@@ -94,9 +92,9 @@ Route::middleware(['auth'])->group(function () {
 // Comment voting routes
 Route::middleware(['auth'])->group(function () {
     Route::post('/comments/{comment}/vote', [CommentVoteController::class, 'vote'])
-          ->name('comments.vote');
+        ->name('comments.vote');
     Route::delete('/comments/{comment}/vote', [CommentVoteController::class, 'removeVote'])
-          ->name('comments.removeVote');
+        ->name('comments.removeVote');
 });
 
 require __DIR__.'/auth.php';

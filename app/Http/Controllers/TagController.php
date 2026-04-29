@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
-use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
@@ -15,8 +14,8 @@ class TagController extends Controller
         $tags = Tag::withCount(['posts' => function ($query) {
             $query->published();
         }])
-        ->orderBy('posts_count', 'desc')
-        ->paginate(20);
+            ->orderBy('posts_count', 'desc')
+            ->paginate(20);
 
         return view('tags.index', compact('tags'));
     }
@@ -27,10 +26,10 @@ class TagController extends Controller
     public function show(Tag $tag)
     {
         $posts = $tag->posts()
-                     ->published()
-                     ->with(['category', 'user', 'tags'])
-                     ->latest('published_at')
-                     ->paginate(10);
+            ->published()
+            ->with(['category', 'user', 'tags'])
+            ->latest('published_at')
+            ->paginate(10);
 
         // Get related tags (tags that appear with this tag)
         $relatedTags = Tag::whereHas('posts', function ($query) use ($tag) {
@@ -38,11 +37,11 @@ class TagController extends Controller
                 $q->where('tags.id', $tag->id);
             });
         })
-        ->where('id', '!=', $tag->id)
-        ->withCount('posts')
-        ->orderBy('posts_count', 'desc')
-        ->limit(10)
-        ->get();
+            ->where('id', '!=', $tag->id)
+            ->withCount('posts')
+            ->orderBy('posts_count', 'desc')
+            ->limit(10)
+            ->get();
 
         return view('tags.show', compact('tag', 'posts', 'relatedTags'));
     }

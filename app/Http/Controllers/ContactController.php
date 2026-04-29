@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
-use Illuminate\Http\Request;
+use App\Events\ContactCreated;
 use App\Mail\ContactSubmitted;
 use App\Mail\ContactSubmittedAdmin;
+use App\Models\Contact;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use App\Events\ContactCreated;
 
 class ContactController extends Controller
 {
@@ -106,6 +106,7 @@ class ContactController extends Controller
         }
 
         $contact->update($validated);
+
         return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
     }
 
@@ -115,6 +116,7 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         $contact->delete();
+
         return redirect()->route('contacts.index')->with('success', 'Contact deleted successfully.');
     }
 
@@ -139,7 +141,6 @@ class ContactController extends Controller
      * - Numbers shorter than 10 digits
      * - Dot separators (e.g., 123.456.7890)
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return array<string, mixed> Validated input data
      */
     protected function validateContact(Request $request): array
@@ -150,7 +151,7 @@ class ContactController extends Controller
                 'required',
                 'string',
                 'max:20',
-                'regex:/^(\+?\d{1,4}[\s-]?)?(\(?\d{3}\)?[\s-]?)?\d{3}[\s-]?\d{4}$/'
+                'regex:/^(\+?\d{1,4}[\s-]?)?(\(?\d{3}\)?[\s-]?)?\d{3}[\s-]?\d{4}$/',
             ],
             'email' => 'required|email',
             'description' => 'required|string',

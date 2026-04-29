@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             'stock' => $this->faker->numberBetween(0, 50),
             'is_active' => $this->faker->boolean(),
             'status' => $this->faker->randomElement(['draft', 'published', 'archived']),
-            'sku' => Str::upper(Str::random(10))
+            'sku' => Str::upper(Str::random(10)),
         ];
     }
 }

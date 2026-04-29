@@ -13,6 +13,7 @@ class CommentReplyNotification extends Notification implements ShouldQueue
     use Queueable;
 
     protected $reply;
+
     protected $originalComment;
 
     /**
@@ -44,14 +45,14 @@ class CommentReplyNotification extends Notification implements ShouldQueue
     {
         $postTitle = $this->reply->post->title;
         $replierName = $this->reply->user->name;
-        $postUrl = route('posts.show', $this->reply->post) . '#comment-' . $this->reply->id;
+        $postUrl = route('posts.show', $this->reply->post).'#comment-'.$this->reply->id;
 
         return (new MailMessage)
             ->subject("New reply to your comment on \"{$postTitle}\"")
             ->greeting("Hello {$notifiable->name}!")
             ->line("{$replierName} replied to your comment on \"{$postTitle}\":")
-            ->line("Original comment: \"" . \Str::limit($this->originalComment->content, 100) . "\"")
-            ->line("Reply: \"" . \Str::limit($this->reply->content, 150) . "\"")
+            ->line('Original comment: "'.\Str::limit($this->originalComment->content, 100).'"')
+            ->line('Reply: "'.\Str::limit($this->reply->content, 150).'"')
             ->action('View Reply', $postUrl)
             ->line('Thank you for being an active member of our community!');
     }

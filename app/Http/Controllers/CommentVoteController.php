@@ -19,7 +19,7 @@ class CommentVoteController extends Controller
     public function vote(Request $request, Comment $comment)
     {
         $request->validate([
-            'type' => 'required|in:like,dislike'
+            'type' => 'required|in:like,dislike',
         ]);
 
         $userId = auth()->id();
@@ -27,8 +27,8 @@ class CommentVoteController extends Controller
 
         // Check if user has already voted
         $existingVote = CommentVote::where('comment_id', $comment->id)
-                                   ->where('user_id', $userId)
-                                   ->first();
+            ->where('user_id', $userId)
+            ->first();
 
         if ($existingVote) {
             if ($existingVote->type === $voteType) {
@@ -45,7 +45,7 @@ class CommentVoteController extends Controller
             CommentVote::create([
                 'comment_id' => $comment->id,
                 'user_id' => $userId,
-                'type' => $voteType
+                'type' => $voteType,
             ]);
             $action = 'added';
         }
@@ -61,7 +61,7 @@ class CommentVoteController extends Controller
                 'action' => $action,
                 'likes_count' => $likesCount,
                 'dislikes_count' => $dislikesCount,
-                'user_vote' => $action === 'removed' ? null : $voteType
+                'user_vote' => $action === 'removed' ? null : $voteType,
             ]);
         }
 
@@ -75,8 +75,8 @@ class CommentVoteController extends Controller
     public function removeVote(Request $request, Comment $comment)
     {
         $vote = CommentVote::where('comment_id', $comment->id)
-                           ->where('user_id', auth()->id())
-                           ->first();
+            ->where('user_id', auth()->id())
+            ->first();
 
         if ($vote) {
             $vote->delete();
@@ -92,7 +92,7 @@ class CommentVoteController extends Controller
                 'success' => true,
                 'likes_count' => $likesCount,
                 'dislikes_count' => $dislikesCount,
-                'user_vote' => null
+                'user_vote' => null,
             ]);
         }
 

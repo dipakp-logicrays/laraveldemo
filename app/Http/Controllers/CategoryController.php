@@ -14,8 +14,8 @@ class CategoryController extends Controller
         $categories = Category::withCount(['posts' => function ($query) {
             $query->published();
         }])
-        ->orderBy('name')
-        ->paginate(12);
+            ->orderBy('name')
+            ->paginate(12);
 
         return view('categories.index', compact('categories'));
     }
@@ -26,10 +26,10 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $posts = $category->posts()
-                         ->published()
-                         ->with(['user', 'tags'])
-                         ->latest('published_at')
-                         ->paginate(10);
+            ->published()
+            ->with(['user', 'tags'])
+            ->latest('published_at')
+            ->paginate(10);
 
         // Get subcategories if you have them
         // $subcategories = $category->children;
